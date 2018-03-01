@@ -18,7 +18,7 @@ int rightDistance = 0, leftDistance = 0;
 #define IN2 8
 #define IN3 9
 #define IN4 11
-#define carSpeed 85
+#define carSpeed 87
 #define carSpeedTurn 140
 
 
