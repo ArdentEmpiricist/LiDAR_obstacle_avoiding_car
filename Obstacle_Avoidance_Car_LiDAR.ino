@@ -8,7 +8,7 @@ Adafruit_VL53L0X lox = Adafruit_VL53L0X();
 VL53L0X_RangingMeasurementData_t measure;
 Servo myservo;
 
-int pos = 60;
+int pos = 50;
 const int stopDist = 350;
 int rightDistance = 0, leftDistance = 0;
 #define HIGH_SPEED
