@@ -101,7 +101,7 @@ int checkWay() {
     Serial.println("Left");
     delay(600);
   }
-  else if ((rightDistance <= 20) || (leftDistance <= 20)) {
+  else if ((rightDistance <= 150) || (leftDistance <= 150)) {
     back();
     Serial.println("Back");
     delay(180);
