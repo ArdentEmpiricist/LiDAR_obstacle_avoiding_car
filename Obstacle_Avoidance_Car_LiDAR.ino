@@ -7,16 +7,16 @@ VL53L0X_RangingMeasurementData_t measure;
 Servo myservo;
 
 int pos = 60;
-const int stopDist = 200;
+const int stopDist = 350;
 int rightDistance = 0, leftDistance = 0;
-
+#define HIGH_SPEED
 #define ENA 5
 #define ENB 6
 #define IN1 7
 #define IN2 8
 #define IN3 9
 #define IN4 11
-#define carSpeed 90
+#define carSpeed 85
 #define carSpeedTurn 140
 
 
@@ -74,38 +74,45 @@ int distanceTest() {
   return (int)Fdistance;
 }
 
-/*int checkWay() {
+int checkWay() {
   myservo.write(10);
   delay(1000);
-  rightDistance = distanceTest();
+  int rightDistance = distanceTest();
+  Serial.println(rightDistance);
 
   delay(500);
-  myservo.write(90);
+
+  myservo.write(170);
   delay(1000);
-  myservo.write(180);
-  delay(1000);
-  leftDistance = distanceTest();
+  int leftDistance = distanceTest();
+  Serial.println(leftDistance);
 
   delay(500);
-  myservo.write(90);
-  delay(2000);
 
   if (rightDistance > leftDistance) {
     right();
+    Serial.println("Right");
     delay(600);
   }
   else if (rightDistance < leftDistance) {
     left();
+    Serial.println("Left");
     delay(600);
   }
   else if ((rightDistance <= 20) || (leftDistance <= 20)) {
     back();
+    Serial.println("Back");
+    delay(180);
+  }
+  else if (rightDistance == leftDistance) {
+    back();
+    Serial.println("Back");
     delay(180);
   }
   else {
     forward();
   }
-  }*/
+}
 
 
 void setup() {
@@ -126,120 +133,61 @@ void setup() {
   Serial.println(F("VL53L0X"));
 
   myservo.attach(3, 1000, 2000);
-  myservo.write(60);
+  myservo.write(50);
 }
 
 void loop()
 {
 
 
-  for (pos = 60; pos <= 120; pos += 1)  {
+  for (pos = 50; pos <= 130; pos += 3)  {
     myservo.write(pos);
     //  Serial.print("Reading a measurement... ");
     lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
 
     if (measure.RangeStatus != 4) {  // phase failures have incorrect data
       Serial.print("Position: "); Serial.print(pos); Serial.print("   "); Serial.print("Distance (mm): "); Serial.println(measure.RangeMilliMeter);
-    } else {
+    }
+    else {
       Serial.println(" out of range ");
     }
     if (measure.RangeMilliMeter <= stopDist) {
       stop();
-      
-      delay(500);
-      
-      myservo.write(20);
-      delay(1000);
-      int rightDistance = distanceTest();
-      Serial.println(rightDistance);
 
       delay(500);
-     
-      myservo.write(160);
-      delay(1000);
-      int leftDistance = distanceTest();
-      Serial.println(leftDistance);
 
-      delay(500);
-     
-      if (rightDistance > leftDistance) {
-        right();
-        Serial.println("Right");
-        delay(600);
-      }
-      else if (rightDistance < leftDistance) {
-        left();
-        Serial.println("Left");
-        delay(600);
-      }
-      else if ((rightDistance <= 20) || (leftDistance <= 20)) {
-        back();
-        Serial.println("Back");
-        delay(180);
-      }
-      else {
-        forward();
-      }
+      checkWay();
     }
+
     else {
       forward();
     }
   }
 
-  for (pos = 120; pos >= 60; pos -= 1)  {
+  for (pos = 130; pos >= 50; pos -= 3)  {
     myservo.write(pos);
     //   Serial.print("Reading a measurement... ");
     lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
 
     if (measure.RangeStatus != 4) {  // phase failures have incorrect data
       Serial.print("Position: "); Serial.print(pos); Serial.print("   "); Serial.print("Distance (mm): "); Serial.println(measure.RangeMilliMeter);
-    } else {
+    }
+    else {
       Serial.println(" out of range ");
     }
     if (measure.RangeMilliMeter <= stopDist) {
       stop();
-      
-      delay(500);
-      
-      myservo.write(20);
-      delay(1000);
-      int rightDistance = distanceTest();
-      Serial.println(rightDistance);
 
       delay(500);
-     
-      myservo.write(160);
-      delay(1000);
-      int leftDistance = distanceTest();
-      Serial.println(leftDistance);
 
-      delay(500);
-     
-      if (rightDistance > leftDistance) {
-        right();
-        Serial.println("Right");
-        delay(600);
-      }
-      else if (rightDistance < leftDistance) {
-        left();
-        Serial.println("Left");
-        delay(600);
-      }
-      else if ((rightDistance <= 20) || (leftDistance <= 20)) {
-        back();
-        Serial.println("Back");
-        delay(180);
-      }
-      else {
-        forward();
-      }
+      checkWay();
     }
+
     else {
       forward();
     }
   }
 }
-
 
 
 
