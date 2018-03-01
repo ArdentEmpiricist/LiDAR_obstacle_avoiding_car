@@ -1,3 +1,5 @@
+//Includes code from Elegoo (www.elegoo.com) and Adafruit (www.adafruit.com)
+
 #include <Servo.h>
 
 #include "Adafruit_VL53L0X.h"
@@ -68,9 +70,9 @@ void stop() {
 
 int distanceTest() {
   lox.rangingTest(&measure, false);
-  delayMicroseconds(10);
+  delay(1);
   float Fdistance = measure.RangeMilliMeter;
-  delayMicroseconds(10);
+  delay(1);
   return (int)Fdistance;
 }
 
@@ -119,7 +121,6 @@ void setup() {
 
   Serial.begin(115200);
 
-  // wait until serial port opens for native USB devices
   while (! Serial) {
     delay(1);
   }
@@ -142,10 +143,10 @@ void loop()
 
   for (pos = 50; pos <= 130; pos += 3)  {
     myservo.write(pos);
-    //  Serial.print("Reading a measurement... ");
-    lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
 
-    if (measure.RangeStatus != 4) {  // phase failures have incorrect data
+    lox.rangingTest(&measure, false); 
+
+    if (measure.RangeStatus != 4) {  
       Serial.print("Position: "); Serial.print(pos); Serial.print("   "); Serial.print("Distance (mm): "); Serial.println(measure.RangeMilliMeter);
     }
     else {
@@ -166,10 +167,10 @@ void loop()
 
   for (pos = 130; pos >= 50; pos -= 3)  {
     myservo.write(pos);
-    //   Serial.print("Reading a measurement... ");
-    lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
+   
+    lox.rangingTest(&measure, false);
 
-    if (measure.RangeStatus != 4) {  // phase failures have incorrect data
+    if (measure.RangeStatus != 4) {  
       Serial.print("Position: "); Serial.print(pos); Serial.print("   "); Serial.print("Distance (mm): "); Serial.println(measure.RangeMilliMeter);
     }
     else {
