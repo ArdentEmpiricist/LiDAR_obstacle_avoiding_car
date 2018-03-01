@@ -130,7 +130,7 @@ void setup() {
     Serial.println(F("Failed to boot VL53L0X"));
     while (1);
   }
-  // power
+
   Serial.println(F("VL53L0X"));
 
   myservo.attach(3, 1000, 2000);
