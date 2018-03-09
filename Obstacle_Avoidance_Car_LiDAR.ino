@@ -9,7 +9,7 @@ VL53L0X_RangingMeasurementData_t measure;
 Servo myservo;
 
 int pos = 50;
-const int stopDist = 350;
+const int stopDist = 350;   //Distance in mm to LiDAR to make car stop
 int rightDistance = 0, leftDistance = 0;
 #define HIGH_SPEED
 #define ENA 5
@@ -18,10 +18,10 @@ int rightDistance = 0, leftDistance = 0;
 #define IN2 8
 #define IN3 9
 #define IN4 11
-#define carSpeed 87
-#define carSpeedTurn 140
+#define carSpeed 87         //slower, include time for LiDAR sweep
+#define carSpeedTurn 140    //turns can be faster
 
-
+//Define movements
 void forward() {
   analogWrite(ENA, carSpeed);
   analogWrite(ENB, carSpeed);
@@ -67,7 +67,7 @@ void stop() {
   digitalWrite(ENB, LOW);
   Serial.println("Stop!");
 }
-
+//define variable for LiDAR measurement
 int distanceTest() {
   lox.rangingTest(&measure, false);
   delay(1);
@@ -75,7 +75,7 @@ int distanceTest() {
   delay(1);
   return (int)Fdistance;
 }
-
+//how the car decides in which direction to turn
 int checkWay() {
   myservo.write(10);
   delay(1000);
@@ -140,7 +140,7 @@ void setup() {
 void loop()
 {
 
-
+//start LiDAR sweep from 50° to 130°
   for (pos = 50; pos <= 130; pos += 3)  {
     myservo.write(pos);
 
@@ -164,7 +164,7 @@ void loop()
       forward();
     }
   }
-
+//LiDAR sweeps back tp 50°
   for (pos = 130; pos >= 50; pos -= 3)  {
     myservo.write(pos);
    
